@@ -2,14 +2,13 @@
 import AppMain from '@/layout/appMain/AppMain.vue'
 import { getDefaultCateSettings, getDefaultGroupSettings } from './category'
 import { ref, watch } from 'vue'
-import { apiDelCate, apiPostCate, type CateTree } from '@/api/categories'
+import type { CateTree } from '@/api/categories'
 import type { PostCateData } from '@/api/categories'
 import CateCard from './CateCard.vue'
 import { getValueFromSettings, type SettingItem } from '@/components/Form/gmForm'
 import GmForm from '@/components/Form/GmForm.vue'
 import notice from '@/utils/notice'
 import messageBox from '@/utils/messageBox'
-import { apiPutCate } from '@/api/categories'
 import { cateStore } from '@/stores/cate'
 
 const cateTreeWithChild = ref<CateTree[]>([])
@@ -102,31 +101,25 @@ const handelPostPutCateGroup = () => {
   if (dialog.value.type === 'group') data.role = 1
 
   if (dialog.value.method === 'post') {
-    apiPostCate(data)
-      .then(() => {
+    cateStore.postCate(data).then((res) => {
+      loading.value = false
+      if (res === true) {
         notice.success(`新增${data.role ? '分组' : '分类'} ${data.name} 成功`)
         dialogVisible.value = false
-        cateStore.reload()
-      })
-      .catch((e) => {
-        notice.error(`新增${data.role ? '分组' : '分类'} ${data.name} 失败：${e}`)
-      })
-      .finally(() => {
-        loading.value = false
-      })
+      } else {
+        notice.error(`新增${data.role ? '分组' : '分类'} ${data.name} 失败：${res}`)
+      }
+    })
   } else {
-    apiPutCate(dialog.value.cateID, data)
-      .then(() => {
+    cateStore.putCate(dialog.value.cateID, data).then((res) => {
+      loading.value = false
+      if (res === true) {
         notice.success(`修改${data.role ? '分组' : '分类'} ${data.name} 成功`)
         dialogVisible.value = false
-        cateStore.reload()
-      })
-      .catch((e) => {
-        notice.error(`修改${data.role ? '分组' : '分类'} ${data.name} 失败：${e}`)
-      })
-      .finally(() => {
-        loading.value = false
-      })
+      } else {
+        notice.error(`修改${data.role ? '分组' : '分类'} ${data.name} 失败：${res}`)
+      }
+    })
   }
 }
 
@@ -177,27 +170,25 @@ const handelPutCate = (cate: PostCateData) => {
 }
 
 const handelDelCate = (cate: PostCateData) => {
-  apiDelCate(cate.id)
-    .then(() => {
+  cateStore.delCate(cate.id).then((res) => {
+    if (res === true) {
       notice.success(`删除分类${cate.name}成功`)
-      cateStore.reload()
-    })
-    .catch((e) => {
-      notice.error(e)
-    })
+    } else {
+      notice.error(`删除分类${cate.name}失败：${res}`)
+    }
+  })
 }
 
 const handelDelGroup = (group: PostCateData) => {
   messageBox.confirm(`你确定要删除分组 ${group.name} 吗? 这是不可逆的`, (confirm) => {
     if (confirm) {
-      apiDelCate(group.id)
-        .then(() => {
-          notice.success(`删除分组${group.name}成功`)
-          cateStore.reload()
-        })
-        .catch((e) => {
-          notice.error(e)
-        })
+      cateStore.delCate(group.id).then((res) => {
+        if (res === true) {
+          notice.success(`删除分类${group.name}成功`)
+        } else {
+          notice.error(`删除分类${group.name}失败：${res}`)
+        }
+      })
     }
   })
 }
