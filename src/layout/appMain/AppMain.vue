@@ -32,6 +32,7 @@ if (menuItem) {
         indeterminate
         :show-text="false"
         :duration="2"
+        :stroke-width="4"
       />
     </div>
   </el-header>
