@@ -11,6 +11,7 @@ import { md2html } from '@/utils/article'
 import LoadingDialog from '@/components/LoadingDialog/LoadingDialog.vue'
 import { dayjs } from 'element-plus'
 import GmIcon from '@/components/Icon/GmIcon.vue'
+import { cateStore } from '@/stores/cate'
 
 // 存储文章数据
 const data = ref<ArticleData[]>([])
@@ -189,6 +190,7 @@ const handelResetHtmlContent = () => {
             </div>
             <div class="entity-body">
               {{ dayjs(scope.row.updated_at).format('YYYY-MM-DD') }}
+              {{ cateStore.cateMap.get(scope.row.cid)!.name }}
             </div>
           </div>
         </template>
@@ -235,5 +237,11 @@ const handelResetHtmlContent = () => {
 .entity-wrapper {
   display: flex;
   flex-direction: column;
+
+  .entity-body {
+    display: flex;
+    font-size: .8em;
+    opacity: .75;
+  }
 }
 </style>

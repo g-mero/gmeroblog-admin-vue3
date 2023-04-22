@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppMain from '@/layout/appMain/AppMain.vue'
-import { cateTree, getDefaultCateSettings, getDefaultGroupSettings, reloadCates } from './category'
+import { getDefaultCateSettings, getDefaultGroupSettings } from './category'
 import { ref, watch } from 'vue'
 import { apiDelCate, apiPostCate, type CateTree } from '@/api/categories'
 import type { PostCateData } from '@/api/categories'
@@ -10,6 +10,7 @@ import GmForm from '@/components/Form/GmForm.vue'
 import notice from '@/utils/notice'
 import messageBox from '@/utils/messageBox'
 import { apiPutCate } from '@/api/categories'
+import { cateStore } from '@/stores/cate'
 
 const cateTreeWithChild = ref<CateTree[]>([])
 const cateTreeNoChild = ref<{
@@ -21,12 +22,14 @@ const cateTreeNoChild = ref<{
 })
 
 watch(
-  cateTree,
   () => {
+    return cateStore.cateTree
+  },
+  (cateTree) => {
     cateTreeWithChild.value = []
     cateTreeNoChild.value.children = []
 
-    cateTree.value.forEach((v) => {
+    cateTree.forEach((v) => {
       if (v.role === 1) {
         cateTreeWithChild.value.push(v)
       } else {
@@ -103,7 +106,7 @@ const handelPostPutCateGroup = () => {
       .then(() => {
         notice.success(`新增${data.role ? '分组' : '分类'} ${data.name} 成功`)
         dialogVisible.value = false
-        reloadCates()
+        cateStore.reload()
       })
       .catch((e) => {
         notice.error(`新增${data.role ? '分组' : '分类'} ${data.name} 失败：${e}`)
@@ -116,7 +119,7 @@ const handelPostPutCateGroup = () => {
       .then(() => {
         notice.success(`修改${data.role ? '分组' : '分类'} ${data.name} 成功`)
         dialogVisible.value = false
-        reloadCates()
+        cateStore.reload()
       })
       .catch((e) => {
         notice.error(`修改${data.role ? '分组' : '分类'} ${data.name} 失败：${e}`)
@@ -177,7 +180,7 @@ const handelDelCate = (cate: PostCateData) => {
   apiDelCate(cate.id)
     .then(() => {
       notice.success(`删除分类${cate.name}成功`)
-      reloadCates()
+      cateStore.reload()
     })
     .catch((e) => {
       notice.error(e)
@@ -190,7 +193,7 @@ const handelDelGroup = (group: PostCateData) => {
       apiDelCate(group.id)
         .then(() => {
           notice.success(`删除分组${group.name}成功`)
-          reloadCates()
+          cateStore.reload()
         })
         .catch((e) => {
           notice.error(e)

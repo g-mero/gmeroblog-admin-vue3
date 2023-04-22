@@ -6,12 +6,12 @@ import { ref } from 'vue'
 import { apiGetArt, apiPutArt } from '@/api/articles'
 import message from '@/utils/message'
 
-import { categories } from '@/views/archive/category/category'
 import { ruleTitle } from '@/utils/validateRules'
 import { ruleJson } from '@/utils/validateRules'
 import type { FormInstance } from 'element-plus'
 import router from '@/router'
 import notice from '@/utils/notice'
+import { cateStore } from '@/stores/cate'
 
 const value = ref('')
 
@@ -106,7 +106,7 @@ const dialogVisible = ref(false)
           <ElFormItem label="分类" required>
             <ElSelect v-model="artSetsForm.cid">
               <ElOption
-                v-for="cate in categories"
+                v-for="cate in cateStore.cates"
                 :value="cate.id"
                 :label="cate.name"
                 :key="cate.id"

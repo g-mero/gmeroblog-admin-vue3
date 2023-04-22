@@ -1,30 +1,5 @@
-import { apiGetCates, apiGetCateTree, type CateTree, type PostCateData } from '@/api/categories'
-import { ref } from 'vue'
 import type { SettingItem } from '@/components/Form/gmForm'
-
-const categories = ref<PostCateData[]>([])
-
-const cateTree = ref<CateTree[]>([])
-
-const groupIDs: { label: string; value: string }[] = [{ label: '不分组', value: '0' }]
-
-export async function reloadCates() {
-  categories.value = await apiGetCates()
-  cateTree.value = await apiGetCateTree()
-  groupIDs.splice(1)
-  cateTree.value.forEach((v) => {
-    if (v.role === 1) {
-      const tmp = {
-        label: v.name,
-        value: v.id.toString()
-      }
-
-      groupIDs.push(tmp)
-    }
-  })
-}
-
-reloadCates()
+import { cateStore } from '@/stores/cate'
 
 export function getDefaultCateSettings(groupID = 0) {
   const cateSettings: SettingItem[] = [
@@ -39,7 +14,7 @@ export function getDefaultCateSettings(groupID = 0) {
       label: '分组',
       type: 'select',
       value: `${groupID}`,
-      options: groupIDs
+      options: cateStore.groupIDs
     },
     {
       name: 'slug',
@@ -82,5 +57,3 @@ export function getDefaultGroupSettings() {
 
   return groupSettings
 }
-
-export { categories, cateTree }
