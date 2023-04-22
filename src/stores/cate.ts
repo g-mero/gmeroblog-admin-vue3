@@ -1,4 +1,12 @@
-import { apiGetCates, apiGetCateTree, type CateTree, type PostCateData } from '@/api/categories'
+import {
+  apiDelCate,
+  apiGetCates,
+  apiGetCateTree,
+  apiPostCate,
+  apiPutCate,
+  type CateTree,
+  type PostCateData
+} from '@/api/categories'
 import { defineStore } from 'pinia'
 import { parse, stringify } from 'zipson/lib'
 
@@ -64,6 +72,36 @@ export const useCateStore = defineStore('category', {
       } else {
         return false
       }
+    },
+    async delCate(id: number) {
+      return apiDelCate(id)
+        .then(() => {
+          this.reload()
+          return true
+        })
+        .catch((e: string) => {
+          return e
+        })
+    },
+    async postCate(data: PostCateData) {
+      return apiPostCate(data)
+        .then(() => {
+          this.reload()
+          return true
+        })
+        .catch((e: string) => {
+          return e
+        })
+    },
+    async putCate(id: number, data: PostCateData) {
+      return apiPutCate(id, data)
+        .then(() => {
+          this.reload()
+          return true
+        })
+        .catch((e: string) => {
+          return e
+        })
     }
   },
   persist: {
