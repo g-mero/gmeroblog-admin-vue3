@@ -186,7 +186,10 @@ const handelResetHtmlContent = () => {
           <div class="entity-wrapper">
             <div class="entity-title">
               <el-text truncated>
-                <a :href="`${getConfig().SiteUrl}/article/${scope.row.id}`" class="goto-btn"
+                <a
+                  :href="`${getConfig().SiteUrl}/article/${scope.row.id}`"
+                  class="goto-btn"
+                  target="_blank"
                   ><GmIcon icon="solar:square-arrow-right-up-linear"
                 /></a>
 
