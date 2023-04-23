@@ -120,5 +120,5 @@ export const useCateStore = defineStore('category', {
 export const cateStore = useCateStore()
 
 if (cateStore.needLoad) {
-  await cateStore.reload()
+  cateStore.reload()
 }
