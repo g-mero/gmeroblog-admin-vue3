@@ -46,5 +46,5 @@ export const ruleJson: FormItemRule[] = [
 
 export const ruleTitle: FormItemRule[] = [
   { required: true, message: '请输入标题', trigger: 'blur' },
-  { min: 2, max: 25, message: '标题长度再2到25之间', trigger: 'blur' }
+  { min: 2, max: 50, message: '标题长度再2到50之间', trigger: 'blur' }
 ]
