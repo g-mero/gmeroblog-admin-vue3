@@ -69,10 +69,6 @@ const onPutArt = async (formEl: FormInstance | undefined) => {
   })
 }
 
-const onChange = () => {
-  console.log(value.value)
-}
-
 const artSetsForm = ref({
   title: '',
   cid: 1,
@@ -90,14 +86,14 @@ const dialogVisible = ref(false)
 </script>
 
 <template>
-  <AppMain v-loading="true">
+  <AppMain>
     <template #header
       ><ElButton type="primary" plain size="large" @click="dialogVisible = true"
         >更新</ElButton
       ></template
     >
     <div>
-      <MdEditor height="600px" v-model="value" theme="light" @change="onChange"></MdEditor>
+      <MdEditor height="600px" v-model="value" theme="light"></MdEditor>
       <el-dialog v-model="dialogVisible" title="发布文章" width="30%">
         <ElForm :model="artSetsForm" label-width="auto" :rules="rules" ref="ruleFormRef">
           <ElFormItem label="标题" prop="title" required>
