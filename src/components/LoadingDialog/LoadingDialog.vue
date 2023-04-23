@@ -42,7 +42,7 @@ const status = () => {
       <div class="content-center">
         <el-progress
           type="circle"
-          :percentage="((data.success + data.error) / data.total) * 100"
+          :percentage="Math.floor(((data.success + data.error) / data.total) * 100)"
           :status="status()"
         />
         <slot name="bottom">{{
