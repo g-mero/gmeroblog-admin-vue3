@@ -1,3 +1,4 @@
 {
-  "Api": "/api/v1"
+  "Api": "/api/v1",
+  "SiteUrl": ""
 }

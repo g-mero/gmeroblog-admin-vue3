@@ -12,6 +12,7 @@ import LoadingDialog from '@/components/LoadingDialog/LoadingDialog.vue'
 import { dayjs } from 'element-plus'
 import GmIcon from '@/components/Icon/GmIcon.vue'
 import { cateStore } from '@/stores/cate'
+import { getConfig } from '@/utils/config'
 
 // 存储文章数据
 const data = ref<ArticleData[]>([])
@@ -185,12 +186,20 @@ const handelResetHtmlContent = () => {
           <div class="entity-wrapper">
             <div class="entity-title">
               <el-text truncated>
-                {{ scope.row.title }}
+                <a :href="`${getConfig().SiteUrl}/article/${scope.row.id}`" class="goto-btn"
+                  ><GmIcon icon="solar:square-arrow-right-up-linear"
+                /></a>
+
+                <span
+                  class="goto-edit"
+                  @click="router.push({ name: 'edit-arts', params: { id: `${scope.row.id}` } })"
+                  >{{ scope.row.title }}</span
+                >
               </el-text>
             </div>
             <div class="entity-body">
               {{ dayjs(scope.row.updated_at).format('YYYY-MM-DD') }}
-              {{ cateStore.cateMap.get(scope.row.cid)!.name }}
+              {{ cateStore.cateMap.get(scope.row.cid)?.name }}
             </div>
           </div>
         </template>
@@ -203,28 +212,6 @@ const handelResetHtmlContent = () => {
           </el-popconfirm>
         </template>
       </data-show-table>
-      <!--       <el-table
-        :data="data"
-        height="85vh"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-        v-loading="loading"
-      >
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="id" label="ID" width="55" />
-        <el-table-column prop="title" label="标题" width="180" show-overflow-tooltip />
-        <el-table-column prop="updated_at" label="更新时间" :formatter="dateFormatter" />
-        <el-table-column label="操作">
-          <template #default="scope">
-            <el-button size="small" type="primary" @click="handelEdit(scope.row)">编辑</el-button>
-            <el-popconfirm title="确定删除吗？" @confirm="handleDelete(scope.$index, scope.row)">
-              <template #reference>
-                <el-button size="small" type="danger">删除</el-button>
-              </template>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table> -->
     </div>
     <loading-dialog
       :data="resetHtmlContentProgress"
@@ -237,11 +224,47 @@ const handelResetHtmlContent = () => {
 .entity-wrapper {
   display: flex;
   flex-direction: column;
+  padding-right: 1rem;
 
   .entity-body {
     display: flex;
-    font-size: .8em;
-    opacity: .75;
+    font-size: 0.8em;
+    opacity: 0.75;
+  }
+
+  .entity-title {
+    > span {
+      position: relative;
+      padding-right: 1.1rem;
+    }
+
+    .goto-btn {
+      position: absolute;
+      height: auto;
+      top: 0.2rem;
+      right: 0;
+      opacity: 0;
+      transition: all 0.25s ease-in-out;
+      padding: 0;
+
+      &:hover {
+        color: aqua;
+      }
+    }
+
+    .goto-edit {
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+
+    &:hover {
+      .goto-btn {
+        opacity: 1;
+      }
+    }
   }
 }
 </style>
