@@ -27,6 +27,16 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       }
     },
+    server: {
+      proxy: {
+        '^/api/.*': {
+          // 这里填写后端地址
+          target: 'http://127.0.0.1:3090/api/',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    },
     build: {
       sourcemap: false,
       // 消除打包大小超过500kb警告
