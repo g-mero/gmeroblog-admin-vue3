@@ -2,7 +2,7 @@ import type { App } from 'vue'
 import axios from 'axios'
 
 let config: ServerConfigs = {}
-const { VITE_PUBLIC_PATH } = import.meta.env
+const { BASE_URL } = import.meta.env
 
 const setConfig = (cfg?: unknown) => {
   config = Object.assign(config, cfg)
@@ -17,7 +17,7 @@ export const getServerConfig = async (app: App): Promise<undefined> => {
   app.config.globalProperties.$config = getConfig()
   return axios({
     method: 'get',
-    url: `${VITE_PUBLIC_PATH}serverConfig.json`
+    url: `${BASE_URL}serverConfig.json`
   })
     .then(({ data: config }) => {
       let $config = app.config.globalProperties.$config
