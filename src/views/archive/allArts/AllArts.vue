@@ -7,7 +7,7 @@ import message from '@/utils/message'
 import notice from '@/utils/notice'
 import { ref, watch } from 'vue'
 import messageBox from '@/utils/messageBox'
-import { md2html } from '@/utils/article'
+import { genDesc, md2html } from '@/utils/article'
 import LoadingDialog from '@/components/LoadingDialog/LoadingDialog.vue'
 import { dayjs } from 'element-plus'
 import GmIcon from '@/components/Icon/GmIcon.vue'
@@ -127,7 +127,13 @@ const handelResetHtmlContent = () => {
           })
 
           if (res) {
-            await apiPatchArt(art.id, { html_content: md2html(res.content) })
+            const htmlContent = md2html(res.content)
+            let desc = undefined
+            if (res.desc === '') desc = genDesc(htmlContent)
+            await apiPatchArt(art.id, {
+              html_content: htmlContent,
+              desc
+            })
               .then(() => {
                 resetHtmlContentProgress.value.success += 1
               })
