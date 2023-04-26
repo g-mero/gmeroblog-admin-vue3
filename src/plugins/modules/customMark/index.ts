@@ -6,10 +6,12 @@ import { lazyImage } from './src/lazyimage'
 import { maccodes } from './src/maccodes'
 
 import './src/assets/article.scss'
+import type { SettingItem } from '@/components/Form/gmForm'
 
 export default {
   name: 'justy_customMark',
   desc: '这是justy主题的自定义编辑器语法插件，需要主题支持，如果您更换了主题那么就可能需要关闭此插件',
+  settings: [{name:''}] as SettingItem[],
   init() {
     // 设置渲染器
     Markdown.use(colorBlockquote).use(maccodes).use(lazyImage)

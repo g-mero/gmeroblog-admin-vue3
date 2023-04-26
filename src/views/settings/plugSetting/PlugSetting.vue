@@ -3,7 +3,7 @@ import AppMain from '@/layout/appMain/AppMain.vue'
 import DataShowTable from '@/components/DataShowTable/DataShowTable.vue'
 import { plugins } from '@/plugins'
 import { ref } from 'vue'
-import { apiPutSettings } from '@/api/settings'
+import { apiPutPlugSettings } from '@/api/settings'
 import notice from '@/utils/notice'
 
 const data = plugins
@@ -21,16 +21,18 @@ const pageSize = 10
 const onSelectionChange = () => {}
 
 const onSave = () => {
-  apiPutSettings({ id: 9, name: 'plugins_enable', content: apiData.value })
-    .then((res) => {
-      if (res) {
-        notice.success('保存成功')
-        window.location.reload()
-      }
-    })
-    .catch((e) => {
-      notice.error(`保存失败：${e}`)
-    })
+  data.forEach((v) => {
+    apiPutPlugSettings({ id: 0, name: v.name, content: { enabled: apiData.value[v.name] } })
+      .then((res) => {
+        if (res) {
+          notice.success('保存成功')
+          window.location.reload()
+        }
+      })
+      .catch((e) => {
+        notice.error(`保存失败：${e}`)
+      })
+  })
 }
 </script>
 

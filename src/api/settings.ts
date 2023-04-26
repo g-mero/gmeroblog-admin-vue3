@@ -66,3 +66,48 @@ export async function apiPutThemeSettings(data: ApiSetinngData) {
       })
   })
 }
+
+// 上传插件设置项
+export async function apiPostPluginSettings(data: ApiSetinngData) {
+  return new Promise<boolean>((resolve, reject) => {
+    http
+      .post(`settings/plugins`, data)
+      .then((res) => {
+        if (res.data.status === 200) resolve(true)
+        else reject(res.data.message)
+      })
+      .catch(() => {
+        reject('网络错误')
+      })
+  })
+}
+
+// 删除插件设置项
+export async function apiDelPluginSettings(name: string) {
+  return new Promise<boolean>((resolve, reject) => {
+    http
+      .delete(`settings/plugins/${name}`)
+      .then((res) => {
+        if (res.data.status === 200) resolve(true)
+        else reject(res.data.message)
+      })
+      .catch(() => {
+        reject('网络错误')
+      })
+  })
+}
+
+// 更新插件项
+export async function apiPutPlugSettings(data: ApiSetinngData) {
+  return new Promise<boolean>((resolve, reject) => {
+    http
+      .put(`settings/plugins`, data)
+      .then((res) => {
+        if (res.data.status === 200) resolve(true)
+        else reject(res.data.message)
+      })
+      .catch(() => {
+        reject('网络错误')
+      })
+  })
+}
