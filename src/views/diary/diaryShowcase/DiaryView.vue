@@ -2,7 +2,7 @@
 import { apiGetDiary, apiGetDiarydates, type PostDiaryData } from '@/api/diary'
 import GmIcon from '@/components/Icon/GmIcon.vue'
 import router from '@/router'
-import { md2html } from '@/utils/article'
+import { mdPreview } from '@/utils/article'
 import notice from '@/utils/notice'
 import { dayjs } from 'element-plus'
 import { isString } from 'lodash-es'
@@ -128,7 +128,7 @@ if (isString(currDate) && currDate) {
         ></el-header>
         <ElScrollbar height="70vh" v-loading="loading">
           <el-main>
-            <div class="diary-content" v-html="md2html(currDiary?.content || '')"></div>
+            <div class="diary-content" v-html="mdPreview(currDiary?.content || '')"></div>
           </el-main>
         </ElScrollbar>
       </el-container>

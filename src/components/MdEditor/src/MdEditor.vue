@@ -5,7 +5,7 @@ import { onMounted } from 'vue'
 import 'solidjs-md-editor/dist/style.css'
 import { ref } from 'vue'
 import { watch } from 'vue'
-import { md2html } from '@/utils/article'
+import { mdPreview } from '@/utils/article'
 
 const target = ref<HTMLElement>()
 
@@ -29,7 +29,7 @@ onMounted(() => {
       emit('change', v)
     },
     handelPreview(v) {
-      return md2html(v)
+      return mdPreview(v)
     },
     height: props.height,
     theme: props.theme

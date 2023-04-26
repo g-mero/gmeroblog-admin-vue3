@@ -1,5 +1,5 @@
 import { Markdown } from '@/components/MdEditor/src/markdownIt'
-import { markdownRenderer } from '@/utils/article'
+import { markdownRenderer, pluginHookMdEditor } from '@/utils/article'
 import { colorBlockquote } from './src/blockquote'
 import customTrans from './src/custom'
 import { lazyImage } from './src/lazyimage'
@@ -14,6 +14,31 @@ export default {
     // 设置渲染器
     Markdown.use(colorBlockquote).use(maccodes).use(lazyImage)
     markdownRenderer.setCore(customTrans)
+
+    // 修改mdeditor
+    pluginHookMdEditor.previewRenderer = (str: string) => {
+      let result = markdownRenderer.render(str)
+
+      const $tmp = document.createElement('div')
+      $tmp.innerHTML = result
+
+      const imgs = $tmp.querySelectorAll('img')
+
+      imgs.forEach((img) => {
+        const dataSrc = img.getAttribute('data-src')
+        if (dataSrc) {
+          img.src = dataSrc
+          img.removeAttribute('data-src')
+          img.removeAttribute('onerror')
+        }
+      })
+
+      result = $tmp.innerHTML
+
+      $tmp.remove()
+
+      return result
+    }
     // @ts-ignore
     import('./src/assets/justy.min.js')
     import('./src/assets/bootstrap.min.css')
