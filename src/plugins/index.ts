@@ -1,6 +1,9 @@
-interface PluginItem {
+import { apiGetSettings } from '@/api/settings'
+
+export interface PluginItem {
   name: string
-  action: { [key: string]: () => void }
+  init: () => void
+  enabled: boolean
 }
 
 const pluginFiles: Record<string, any> = import.meta.glob(['./modules/*/index.ts'], {
@@ -15,12 +18,27 @@ function getPliginsFromFiles(records: Record<string, any>) {
   return result
 }
 
-export function initPlugins() {
-  const plugins = getPliginsFromFiles(pluginFiles) as PluginItem[]
+export const plugins = getPliginsFromFiles(pluginFiles) as PluginItem[]
 
-  plugins.forEach((p) => {
-    Object.keys(p.action).forEach((v) => {
-      p.action[v]()
+async function reSetPlugins() {
+  await apiGetSettings('plugins').then((res) => {
+    res.forEach((v) => {
+      if (v.name === 'plugins_enable') {
+        Object.keys(v.content).forEach((key) => {
+          plugins.forEach((plug) => {
+            if (plug.name === key) {
+              plug.enabled = v.content[key] === '1'
+            }
+          })
+        })
+      }
     })
+  })
+}
+
+export async function initPlugins() {
+  await reSetPlugins()
+  plugins.forEach((p) => {
+    if (p.enabled) p.init()
   })
 }

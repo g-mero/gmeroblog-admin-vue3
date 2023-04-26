@@ -16,7 +16,7 @@ defineEmits<{
   <div class="data-table-wrapper">
     <el-table
       :data="data"
-      height="85vh"
+      max-height="85vh"
       style="width: 100%"
       @selection-change="onSelectionChange"
       v-loading="loading"

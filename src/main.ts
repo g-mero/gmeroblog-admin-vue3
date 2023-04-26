@@ -21,7 +21,6 @@ getServerConfig(app).then(async () => {
   app.use(router)
   await router.isReady()
 
-  initPlugins()
-
+  await initPlugins()
   app.mount('#app')
 })

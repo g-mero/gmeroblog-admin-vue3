@@ -23,6 +23,15 @@ export default {
         icon: 'solar:pallete-2-linear'
       },
       component: () => import('@/views/settings/themeSetting/ThemeSetting.vue')
+    },
+    {
+      path: 'plugin',
+      name: 'plugin',
+      mate: {
+        title: '插件设置',
+        icon: 'solar:plug-circle-linear'
+      },
+      component: () => import('@/views/settings/plugSetting/PlugSetting.vue')
     }
   ]
 } as MenuRouterItem
