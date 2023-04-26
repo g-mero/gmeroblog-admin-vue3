@@ -3,9 +3,9 @@ import { Editor } from 'solidjs-md-editor'
 import { onMounted } from 'vue'
 
 import 'solidjs-md-editor/dist/style.css'
-import customTrans from './markdownIt/customMark/custom'
 import { ref } from 'vue'
 import { watch } from 'vue'
+import { md2html } from '@/utils/article'
 
 const target = ref<HTMLElement>()
 
@@ -29,7 +29,7 @@ onMounted(() => {
       emit('change', v)
     },
     handelPreview(v) {
-      return customTrans(v)
+      return md2html(v)
     },
     height: props.height,
     theme: props.theme

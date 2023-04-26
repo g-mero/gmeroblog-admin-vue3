@@ -1,4 +1,5 @@
-import { Markdown } from "../index";
+import { Markdown } from "@/components/MdEditor/src/markdownIt";
+
 
 function gmgcc(content: string) {
   const re = /\[gmacc title="(.+)" ?(close|open)?]([\S\s]+?)\[\/gmacc]/gm;

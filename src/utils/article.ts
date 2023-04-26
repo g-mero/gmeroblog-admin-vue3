@@ -1,7 +1,29 @@
-import customTrans from '@/components/MdEditor/src/markdownIt/customMark/custom'
+import { Markdown } from '@/components/MdEditor/src/markdownIt'
+
+export const markdownRenderer = {
+  core: (str: string) => {
+    return Markdown.render(str)
+  },
+  extra: [] as ((str: string) => string)[],
+  use(renderer: (str: string) => string) {
+    this.extra.push(renderer)
+  },
+  setCore(renderer: (str: string) => string) {
+    this.core = renderer
+  },
+  render(str: string) {
+    let result = this.core(str)
+
+    this.extra.forEach((v) => {
+      result = v(result)
+    })
+
+    return result
+  }
+}
 
 export function md2html(content: string) {
-  return customTrans(content)
+  return markdownRenderer.render(content)
 }
 
 /**

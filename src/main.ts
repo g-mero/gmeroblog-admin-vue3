@@ -8,6 +8,7 @@ import router from './router'
 import './assets/base.css'
 import { getServerConfig } from './utils/config'
 import { httpInit } from './api/http'
+import { initPlugins } from './plugins'
 
 const app = createApp(App)
 
@@ -19,6 +20,8 @@ getServerConfig(app).then(async () => {
 
   app.use(router)
   await router.isReady()
+
+  initPlugins()
 
   app.mount('#app')
 })

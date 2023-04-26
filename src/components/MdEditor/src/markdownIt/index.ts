@@ -23,10 +23,6 @@ import MarkdownItSup from 'markdown-it-sup'
 // @ts-ignore
 import MarkdownItTaskLists from 'markdown-it-task-lists'
 
-import { colorBlockquote } from './customMark/blockquote'
-import { maccodes } from './customMark/maccodes'
-import { lazyImage } from './customMark/lazyimage'
-
 declare const Prism: any
 
 Prism.manual = true
@@ -55,9 +51,6 @@ const Markdown = new MarkdownIt({
     return '' // use external default escaping
   }
 })
-  .use(colorBlockquote)
-  .use(maccodes)
-  .use(lazyImage)
   .use(MarkdownItAbbr)
   .use(MarkdownItAnchor)
   .use(MarkdownItEmoji)
