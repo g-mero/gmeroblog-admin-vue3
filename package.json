@@ -30,7 +30,7 @@
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "pinia": "^2.0.35",
-    "solidjs-md-editor": "^0.1.1",
+    "solidjs-md-editor": "^0.2.1",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "zipson": "^0.2.12"
