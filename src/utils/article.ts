@@ -23,7 +23,9 @@ export const markdownRenderer = {
 }
 
 export const pluginHookMdEditor = {
-  previewRenderer: markdownRenderer.render
+  previewRenderer: (str: string) => {
+    return markdownRenderer.render(str)
+  }
 }
 
 export function md2html(content: string) {
