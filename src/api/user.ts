@@ -15,7 +15,8 @@ export function userLogout() {
   return http.get('users/logout')
 }
 
-export async function checkToken() {
+// 检查token
+export function checkToken() {
   return new Promise<boolean>((resolve, reject) => {
     http
       .get('users/check')

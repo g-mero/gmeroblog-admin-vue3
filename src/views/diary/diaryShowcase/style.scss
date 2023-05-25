@@ -1,0 +1,66 @@
+.diary-content {
+  overflow: hidden;
+  padding: 2rem 2rem 3rem;
+
+  p {
+    overflow: hidden;
+    margin-bottom: 1.3rem;
+  }
+
+  blockquote {
+    margin: 1rem 0;
+    border-left: 3px solid #dde6e9;
+    padding: 1rem 2.4rem;
+    background-color: #f3f5f7;
+
+    &.warning {
+      border-left-color: #ffaf64;
+      background-color: #fff4e9;
+    }
+
+    &.info {
+      border-left-color: #71deff;
+      background-color: #ebffff;
+    }
+
+    &.danger {
+      border-left-color: #ff3d1b;
+      background-color: #ffeceb;
+    }
+
+    &.secondary {
+      border-left-color: #9b9b9b;
+      background-color: #f1f1f1;
+    }
+
+    &.success {
+      border-left-color: #04e700;
+      background-color: #e5ffe9;
+    }
+  }
+
+  img {
+    padding: 0.3rem;
+    cursor: pointer;
+    margin: 1.2rem auto;
+    max-width: calc(100% - 3rem);
+    display: block;
+  }
+}
+
+.diary-wrapper {
+  .header {
+    button {
+      &:hover,
+      &:focus {
+        background-color: unset !important;
+      }
+    }
+  }
+
+  .diary-main {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 6px 0 12px -5px rgba(0, 172, 181, 0.432), -6px 0 12px -5px rgba(0, 172, 181, 0.473);
+  }
+}

@@ -8,6 +8,8 @@ import { dayjs } from 'element-plus'
 import { isString } from 'lodash-es'
 import { ref, watch } from 'vue'
 
+import './style.scss'
+
 document.title = '日记'
 
 const currDiary = ref<PostDiaryData>({
@@ -83,7 +85,7 @@ if (isString(currDate) && currDate) {
 
 <template>
   <div class="diary-wrapper">
-    <div class="card diary-main">
+    <div class="diary-main">
       <el-container>
         <el-header class="header"
           ><div class="toolbar">
@@ -143,16 +145,22 @@ if (isString(currDate) && currDate) {
   display: flex;
   flex-direction: column;
 
+  background-color: #ecf9ff;
+
   align-items: center;
   justify-content: center;
 }
 
 .diary-main {
   width: 80%;
+  background-color: #fffbeb;
 }
 
 .header {
-  height: min(2rem, 10vh);
+  height: auto;
+  background-color: #ffe7cc;
+  border-radius: 1rem;
+  padding: 0.2rem;
 
   .toolbar {
     display: flex;
