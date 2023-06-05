@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { apiGetSettings, apiPutSettings } from '@/api/settings'
+import { apiCheckSearch, apiResetSearch } from '@/api/search'
+
 import type { SettingsGroup } from '@/components/Setting/gmSetting'
 import { ref } from 'vue'
 import {
@@ -10,9 +12,9 @@ import {
   SettingItemsToApiPostSetDataContent
 } from './baseSets'
 import notice from '@/utils/notice'
-import GmSetting from '@/components/Setting/GmSetting.vue'
 import AppMain from '@/layout/appMain/AppMain.vue'
 import messageBox from '@/utils/messageBox'
+import GmForm from '@/components/Form/GmForm.vue'
 
 const sets = ref<SettingsGroup[]>(getBaseSets())
 
@@ -43,6 +45,7 @@ const updateChanges = (setGroup: SettingsGroup) => {
   if (!isExist) changes.value.push(setGroup)
 }
 
+// 判断是否与初始值相同
 const isInitSet = (setGroup: SettingsGroup) => {
   let result = false
   for (let i = 0; i < initSets.length; i += 1) {
@@ -52,6 +55,7 @@ const isInitSet = (setGroup: SettingsGroup) => {
       let tmp = true
       for (let index = 0; index < set.content.length; index++) {
         const item = set.content[index]
+
         if (item.value !== setGroup.content[index].value) {
           tmp = false
           break
@@ -65,9 +69,25 @@ const isInitSet = (setGroup: SettingsGroup) => {
   return result
 }
 
+// 更新初始值
+const updateInitSet = (setGroups: SettingsGroup[]) => {
+  for (let i = 0; i < initSets.length; i += 1) {
+    const set = initSets[i]
+
+    for (let j = 0; j < setGroups.length; j++) {
+      const newSet = setGroups[j]
+
+      if (set.id === newSet.id) {
+        for (let index = 0; index < newSet.content.length; index++) {
+          set.content[index].value = newSet.content[index].value
+        }
+      }
+    }
+  }
+}
+
 const onSaveSet = (setGroup: SettingsGroup) => {
   updateChanges(setGroup)
-  console.log(changes.value)
 }
 
 const handelSave = () => {
@@ -99,6 +119,8 @@ const handelSave = () => {
           .finally(() => {
             if (success === total) {
               notice.success(`设置修改成功： ${tmp}`)
+              updateInitSet(saveSets)
+              changes.value = []
             } else if (success + error === total) {
               notice.error(`设置项修改出现错误：成功${success},失败${error}`)
             }
@@ -107,6 +129,32 @@ const handelSave = () => {
     }
   })
 }
+
+const checkSearch = () => {
+  apiCheckSearch()
+    .then(() => {
+      notice.success('搜索引擎测试通过')
+    })
+    .catch((e) => {
+      notice.error(`测试失败： ${e}`)
+    })
+}
+
+const loading = ref(false)
+
+const resetSearch = () => {
+  loading.value = true
+  apiResetSearch()
+    .then(() => {
+      notice.success('重置成功')
+    })
+    .catch((e) => {
+      notice.error(`重置失败: ${e}`)
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
 </script>
 
 <template>
@@ -114,7 +162,24 @@ const handelSave = () => {
     <template #header>
       <ElButton @click="handelSave" :disabled="changes.length === 0">保存</ElButton>
     </template>
-    <GmSetting :sets="sets" @change="onSaveSet"></GmSetting>
+    <div class="card">
+      <ElTabs>
+        <ElTabPane v-for="set in sets" :key="set.id" :label="set.label">
+          <GmForm
+            :items="set.content"
+            @change="
+              () => {
+                onSaveSet(set)
+              }
+            "
+          ></GmForm>
+          <div v-if="set.id === 5">
+            <ElButton @click="checkSearch">测试algolia</ElButton>
+            <ElButton @click="resetSearch" :loading="loading">重置索引</ElButton>
+          </div>
+        </ElTabPane>
+      </ElTabs>
+    </div>
   </AppMain>
 </template>
 

@@ -78,11 +78,18 @@ export function getBaseSets() {
     { name: 'mail_password', label: 'SMTP密码', value: '', type: 'text' }
   ]
 
+  const searchSet: SettingItem[] = [
+    { name: 'search_app_id', label: 'algolia appID', value: '', type: 'text' },
+    { name: 'search_api_key', label: 'algolia apiKey', value: '', type: 'text' },
+    { name: 'search_index_name', label: 'algolia 索引库名', value: '', type: 'text' }
+  ]
+
   const BaseSets: SettingsGroup[] = [
     { id: 0, name: 'base_settings', content: baseSet, label: '基本设置' },
     { id: 0, name: 'seo_settings', content: seoSet, label: 'Seo设置' },
     { id: 0, name: 'admin_settings', content: adminSet, label: '管理后台设置' },
-    { id: 0, name: 'mail_settings', content: mailSet, label: '邮件系统设置' }
+    { id: 0, name: 'mail_settings', content: mailSet, label: '邮件系统设置' },
+    { id: 0, name: 'search_settings', content: searchSet, label: '搜索引擎设置' }
   ]
 
   return BaseSets
