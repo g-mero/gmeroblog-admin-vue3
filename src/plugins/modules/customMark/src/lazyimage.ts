@@ -1,13 +1,11 @@
 class lazyImageOpt {
   class?: string
   loadImg!: string
-  errorImg!: string
 }
 
 const defaultOpt = {
   class: 'lazy-load shadow',
-  loadImg: '/theme/justy/assets/img/img-loading.gif',
-  errorImg: '/theme/justy/assets/img/img-404.gif',
+  loadImg: 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
 }
 
 export function lazyImage(md: markdownit, opt?: lazyImageOpt) {
@@ -20,16 +18,12 @@ export function lazyImage(md: markdownit, opt?: lazyImageOpt) {
       // @ts-expect-error:xXX
       token.children,
       options,
-      env,
+      env
     )
 
     token.attrSet('data-src', token.attrGet('src') || '...')
     token.attrSet('class', opt.class || defaultOpt.class)
     token.attrSet('src', opt.loadImg)
-    token.attrSet(
-      'onerror',
-      `javascript:this.src='${opt.errorImg}';this.onerror = null`,
-    )
 
     return slf.renderToken(tokens, idx, options)
   }
